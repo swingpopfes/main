@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>出演アーティスト | Swing Pop Fes 2026 ～君の物語～</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&family=Playfair+Display:ital,wght@0,700;1,700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --purple: #7c3aed;
+      --purple-light: #a855f7;
+      --pink: #ec4899;
+      --pink-light: #f9a8d4;
+      --gold: #f59e0b;
+      --gold-light: #fde68a;
+      --dark: #0f0720;
+      --dark2: #1a0a35;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Noto Sans JP', sans-serif;
+      background-color: var(--dark);
+      color: #fff;
+      overflow-x: hidden;
+    }
+
+    /* Stars */
+    .stars { position: fixed; inset: 0; pointer-events: none; z-index: 0; overflow: hidden; }
+    .star { position: absolute; border-radius: 50%; background: #fff; animation: twinkle var(--d) ease-in-out infinite; opacity: 0; }
+    @keyframes twinkle {
+      0%, 100% { opacity: 0; transform: scale(0.5); }
+      50% { opacity: var(--o); transform: scale(1); }
+    }
+
+    /* Nav */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      padding: 1rem 2rem;
+      display: flex; justify-content: space-between; align-items: center;
+      background: rgba(15, 7, 32, 0.7);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(168,85,247,0.2);
+    }
+    .nav-logo {
+      font-family: 'Playfair Display', serif;
+      font-style: italic; font-size: 1.1rem; font-weight: 700;
+      background: linear-gradient(135deg, var(--gold-light), var(--pink-light));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+      text-decoration: none;
+    }
+    .nav-back {
+      color: rgba(255,255,255,0.6); text-decoration: none; font-size: 0.85rem;
+      display: flex; align-items: center; gap: 0.4rem;
+      transition: color 0.2s;
+    }
+    .nav-back:hover { color: var(--pink-light); }
+
+    /* Hero */
+    .hero {
+      position: relative; min-height: 45vh;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      text-align: center; padding: 8rem 1.5rem 4rem; overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute; inset: 0;
+      background:
+        radial-gradient(ellipse 80% 60% at 50% 50%, rgba(168,85,247,0.3) 0%, transparent 70%),
+        radial-gradient(ellipse 40% 40% at 80% 80%, rgba(236,72,153,0.2) 0%, transparent 60%);
+      z-index: 0;
+    }
+    .hero-content { position: relative; z-index: 1; }
+    .hero h1 {
+      font-family: 'Playfair Display', serif; font-style: italic;
+      font-size: clamp(2.2rem, 7vw, 4.5rem); font-weight: 700;
+      background: linear-gradient(135deg, #fde68a 0%, #f9a8d4 50%, #c4b5fd 100%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+      filter: drop-shadow(0 0 20px rgba(168,85,247,0.6));
+      margin-bottom: 0.5rem; line-height: 1.1;
+    }
+    .hero-sub {
+      font-size: clamp(0.95rem, 2.5vw, 1.2rem);
+      color: rgba(255,255,255,0.55); letter-spacing: 0.12em;
+    }
+
+    /* Divider */
+    .divider {
+      width: 100%; height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(168,85,247,0.4), rgba(236,72,153,0.4), transparent);
+    }
+
+    /* Section base */
+    section { position: relative; z-index: 1; }
+    .section-inner { max-width: 900px; margin: 0 auto; padding: 5rem 1.5rem; }
+    .section-title {
+      text-align: center;
+      font-size: clamp(1.3rem, 3vw, 1.8rem); font-weight: 900; margin-bottom: 3rem;
+    }
+    .section-title span {
+      background: linear-gradient(135deg, var(--gold-light), var(--pink-light), #c4b5fd);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    }
+    .section-title::after {
+      content: ''; display: block; width: 50px; height: 3px;
+      background: linear-gradient(90deg, var(--pink), var(--purple));
+      margin: 0.7rem auto 0; border-radius: 2px;
+    }
+
+    /* Artist Card */
+    .artist-card {
+      display: grid;
+      grid-template-columns: 280px 1fr;
+      gap: 3rem;
+      background: linear-gradient(135deg, rgba(124,58,237,0.12), rgba(236,72,153,0.08));
+      border: 1px solid rgba(168,85,247,0.3);
+      border-radius: 24px;
+      padding: 2.5rem;
+      transition: border-color 0.3s, box-shadow 0.3s;
+    }
+    .artist-card:hover {
+      border-color: rgba(236,72,153,0.5);
+      box-shadow: 0 8px 40px rgba(168,85,247,0.15);
+    }
+
+    @media (max-width: 680px) {
+      .artist-card {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+        padding: 1.8rem;
+      }
+    }
+
+    /* Photo */
+    .artist-photo-wrap {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1rem;
+    }
+    .artist-photo {
+      width: 100%;
+      aspect-ratio: 3 / 4;
+      object-fit: cover;
+      border-radius: 18px;
+      border: 2px solid rgba(168,85,247,0.4);
+      box-shadow: 0 0 30px rgba(168,85,247,0.25);
+      display: block;
+    }
+    .artist-stage-name {
+      font-family: 'Playfair Display', serif;
+      font-style: italic;
+      font-size: 1rem;
+      color: var(--gold-light);
+      letter-spacing: 0.08em;
+      text-align: center;
+    }
+
+    /* Info */
+    .artist-info { display: flex; flex-direction: column; gap: 1.4rem; justify-content: center; }
+
+    .artist-name-ja {
+      font-size: clamp(1.6rem, 4vw, 2.2rem);
+      font-weight: 900;
+      line-height: 1.2;
+      background: linear-gradient(135deg, #fff 0%, var(--pink-light) 100%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    }
+    .artist-name-en {
+      font-family: 'Playfair Display', serif;
+      font-style: italic;
+      font-size: 1.05rem;
+      color: var(--purple-light);
+      margin-top: 0.2rem;
+    }
+
+    .artist-tags {
+      display: flex; flex-wrap: wrap; gap: 0.5rem;
+    }
+    .artist-tag {
+      background: rgba(255,255,255,0.07);
+      border: 1px solid rgba(168,85,247,0.4);
+      border-radius: 50px;
+      padding: 0.3rem 1rem;
+      font-size: 0.78rem;
+      color: rgba(255,255,255,0.8);
+      letter-spacing: 0.05em;
+    }
+    .artist-tag.pink {
+      border-color: rgba(236,72,153,0.5);
+      color: var(--pink-light);
+    }
+    .artist-tag.gold {
+      border-color: rgba(245,158,11,0.5);
+      color: var(--gold-light);
+    }
+
+    .artist-bio {
+      font-size: 0.9rem;
+      color: rgba(255,255,255,0.72);
+      line-height: 2;
+    }
+
+    /* Photo toggle */
+    .photo-toggle {
+      cursor: pointer;
+      transition: opacity 0.15s ease, transform 0.15s ease;
+    }
+    .photo-toggle:active {
+      transform: scale(0.97);
+      opacity: 0.8;
+    }
+    .photo-toggle-hint {
+      font-size: 0.72rem;
+      color: rgba(255,255,255,0.35);
+      text-align: center;
+      letter-spacing: 0.05em;
+    }
+
+    /* Footer */
+    footer {
+      position: relative; z-index: 1; text-align: center;
+      padding: 2rem 1rem;
+      border-top: 1px solid rgba(168,85,247,0.2);
+      color: rgba(255,255,255,0.3); font-size: 0.8rem;
+    }
+  </style>
+</head>
+<body>
+
+<div class="stars" id="stars"></div>
+
+<nav>
+  <a href="index.html" class="nav-logo">Swing Pop Fes</a>
+  <a href="index.html" class="nav-back">← イベントトップへ</a>
+</nav>
+
+<!-- Hero -->
+<section class="hero">
+  <div class="hero-content">
+    <h1>Artists</h1>
+    <p class="hero-sub">出演アーティスト紹介 ― Swing Pop Fes 2026</p>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- Artist List -->
+<section>
+  <div class="section-inner">
+    <h2 class="section-title"><span>出演アーティスト</span></h2>
+
+    <!-- 高山奈々 -->
+    <div class="artist-card">
+      <div class="artist-photo-wrap">
+        <img src="images/高山奈々.jpg" alt="高山奈々" class="artist-photo photo-toggle" data-alt="images/高山奈々2.jpg" data-original="images/高山奈々.jpg">
+        <p class="artist-stage-name">Nana＊Rainbow</p>
+        <p class="photo-toggle-hint">タップで写真切り替え</p>
+      </div>
+      <div class="artist-info">
+        <div>
+          <p class="artist-name-ja">高山 奈々</p>
+          <p class="artist-name-en">Nana Takayama</p>
+        </div>
+        <div class="artist-tags">
+          <span class="artist-tag gold">シンガー</span>
+          <span class="artist-tag gold">タレント</span>
+          <span class="artist-tag pink">名古屋拠点</span>
+          <span class="artist-tag">ポップス</span>
+          <span class="artist-tag">アニソン</span>
+          <span class="artist-tag">ジャズ</span>
+          <span class="artist-tag">MC</span>
+        </div>
+        <p class="artist-bio">
+          名古屋を拠点に活動するシンガー・タレント。Nana＊Rainbowとして、ポップでカラフルな世界観を軸に、観る人の心を明るく照らすステージを展開している。<br><br>
+          これまでに、地域イベントや音楽ライブへの出演に加え、司会・ナレーションなどでも活躍。蒲郡・豊橋・長久手など各地のイベントMCを務めるなど、幅広い現場経験を持つ。<br><br>
+          現在は子育てをしながらタレント活動を行っており、等身大の魅力とリアルな発信で、多くの共感を集めている。またアニソンやJ-POPをジャズアレンジで届けるプロジェクトにも参加し、さらなる表現の幅を広げている。
+        </p>
+      </div>
+    </div>
+
+    <!-- あみき -->
+    <div class="artist-card" id="amiki" style="margin-top: 2.5rem;">
+      <div class="artist-photo-wrap">
+        <img src="images/あみき.jpg" alt="あみき" class="artist-photo photo-toggle" data-alt="images/あみき2.jpg" data-original="images/あみき.jpg">
+        <p class="artist-stage-name">あみき</p>
+        <p class="photo-toggle-hint">タップで写真切り替え</p>
+      </div>
+      <div class="artist-info">
+        <div>
+          <p class="artist-name-ja">あみき</p>
+        </div>
+        <div class="artist-tags">
+          <span class="artist-tag gold">歌</span>
+          <span class="artist-tag gold">サックス</span>
+          <span class="artist-tag pink">コスプレ</span>
+          <span class="artist-tag">MC</span>
+          <span class="artist-tag">ゆるイラスト</span>
+        </div>
+        <p class="artist-bio">
+          愛知県田原市 道の駅PR大使。<br><br>
+          歌・サックス・コスプレ・MC・ゆるイラストなど幅広く活動中。
+        </p>
+      </div>
+    </div>
+
+    <!-- TEKONDO -->
+    <div class="artist-card" id="tekondo" style="margin-top: 2.5rem;">
+      <div class="artist-photo-wrap">
+        <img src="images/TEKONDO.jpg" alt="TEKONDO" class="artist-photo">
+        <p class="artist-stage-name">TEKONDO</p>
+      </div>
+      <div class="artist-info">
+        <div>
+          <p class="artist-name-ja">TEKONDO</p>
+        </div>
+        <div class="artist-tags">
+          <span class="artist-tag gold">シンガー</span>
+          <span class="artist-tag">ポップス</span>
+          <span class="artist-tag pink">名古屋拠点</span>
+        </div>
+        <p class="artist-bio">
+          プロフィール準備中です。お楽しみに！
+        </p>
+      </div>
+    </div>
+
+    <!-- まこつん -->
+    <div class="artist-card" id="makotsun" style="margin-top: 2.5rem;">
+      <div class="artist-photo-wrap">
+        <img src="images/まこつん.jpg" alt="まこつん" class="artist-photo">
+        <p class="artist-stage-name">まこつん</p>
+      </div>
+      <div class="artist-info">
+        <div>
+          <p class="artist-name-ja">まこつん</p>
+        </div>
+        <div class="artist-tags">
+          <span class="artist-tag gold">シンガー</span>
+          <span class="artist-tag">ポップス</span>
+          <span class="artist-tag pink">名古屋拠点</span>
+        </div>
+        <p class="artist-bio">
+          プロフィール準備中です。お楽しみに！
+        </p>
+      </div>
+    </div>
+
+    <!-- 椿紗奈 -->
+    <div class="artist-card" id="tsubaki-sana" style="margin-top: 2.5rem;">
+      <div class="artist-photo-wrap">
+        <img src="images/椿紗奈.jpg" alt="椿紗奈" class="artist-photo photo-toggle" data-alt="images/椿紗奈2.jpg" data-original="images/椿紗奈.jpg">
+        <p class="artist-stage-name">椿紗奈</p>
+        <p class="photo-toggle-hint">タップで写真切り替え</p>
+      </div>
+      <div class="artist-info">
+        <div>
+          <p class="artist-name-ja">椿 紗奈</p>
+          <p class="artist-name-en">Sana Tsubaki</p>
+        </div>
+        <div class="artist-tags">
+          <span class="artist-tag gold">シンガー</span>
+          <span class="artist-tag">MC</span>
+          <span class="artist-tag pink">名古屋拠点</span>
+        </div>
+        <p class="artist-bio">
+          プロフィール準備中です。お楽しみに！
+        </p>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<footer>
+  <p>© 2026 Swing Pop Fes ～君の物語～ All Rights Reserved.</p>
+  <p style="margin-top: 0.5rem;">Swing Pop Fes 制作委員会 愛知県知立市長田三丁目32番地3 2F</p>
+</footer>
+
+<script>
+  const starsEl = document.getElementById('stars');
+  for (let i = 0; i < 100; i++) {
+    const s = document.createElement('div');
+    s.className = 'star';
+    const size = Math.random() * 3 + 1;
+    s.style.cssText = `
+      width: ${size}px; height: ${size}px;
+      left: ${Math.random() * 100}%;
+      top: ${Math.random() * 100}%;
+      --d: ${Math.random() * 4 + 2}s;
+      --o: ${Math.random() * 0.8 + 0.2};
+      animation-delay: ${Math.random() * 5}s;
+    `;
+    starsEl.appendChild(s);
+  }
+
+  // Photo toggle
+  document.querySelectorAll('.photo-toggle').forEach(img => {
+    img.dataset.toggled = 'false';
+    img.addEventListener('click', () => {
+      const isToggled = img.dataset.toggled === 'true';
+      const next = isToggled ? img.dataset.original : img.dataset.alt;
+      img.style.opacity = '0';
+      img.style.transform = 'scale(0.95)';
+      setTimeout(() => {
+        img.src = next;
+        img.dataset.toggled = isToggled ? 'false' : 'true';
+        img.style.opacity = '1';
+        img.style.transform = 'scale(1)';
+      }, 150);
+    });
+  });
+</script>
+</body>
+</html>
